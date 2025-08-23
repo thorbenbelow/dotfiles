@@ -16,11 +16,14 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+
 autoload -U compinit && compinit
+autoload -U +X bashcompinit && bashcompinit
 
 export GOPATH=$HOME/go
+export GOBIN=$HOME/go/bin
 export PATH=$PATH:$GOPATH
-export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOBIN
 
 
 # Env
@@ -67,15 +70,12 @@ fi
 # Terraform
 if command -v terraform &> /dev/null
 then
-  alias t="terraform"
-  alias ti="terraform init"
-  alias tiu="terraform init -upgrade"
+  alias tf="terraform"
   alias tp="terraform plan"
   alias tpp="terraform plan -out planned"
   alias ta="terraform apply"
   alias tap="terraform apply planned"
 
-  autoload -U +X bashcompinit && bashcompinit
   complete -o nospace -C /opt/homebrew/bin/terraform terraform
 fi
 
@@ -98,6 +98,7 @@ fi
 if command -v kubectl &> /dev/null
 then
   alias k="kubectl"
+  alias ks="kubectl get secret -o go-template='{{range \$k,\$v := .data}}{{printf \"%s: \" \$k}}{{if not \$v}}{{\$v}}{{else}}{{\$v | base64decode}}{{end}}{{\"\n\"}}{{end}}'"
   alias kustom="kubectl apply -k"
   . <(kubectl completion zsh)
 fi
