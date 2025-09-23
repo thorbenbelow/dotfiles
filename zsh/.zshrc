@@ -118,6 +118,11 @@ then
   . <(docker completion zsh)
 fi
 
+if command -v stackit &> /dev/null
+then
+  . <(stackit completion zsh)
+fi
+
 if command -v flux &> /dev/null
 then
   . <(flux completion zsh)
