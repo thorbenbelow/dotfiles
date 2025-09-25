@@ -125,12 +125,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 
 -- Move Lines
-vim.keymap.set("n", "<C-j>", ":m .+1<cr>==")
-vim.keymap.set("n", "<C-k>", ":m .-2<cr>==")
-vim.keymap.set("i", "<C-j>", "<Esc>:m .+1<cr>==gi")
-vim.keymap.set("i", "<C-k>", "<Esc>:m .-2<cr>==gi")
-vim.keymap.set("v", "<C-j>", ":m '>+1<cr>gv=gv")
-vim.keymap.set("v", "<C-k>", ":m '<-2<cr>gv=gv")
+vim.keymap.set("n", "<M-j>", ":m .+1<cr>==")
+vim.keymap.set("n", "<M-k>", ":m .-2<cr>==")
+vim.keymap.set("i", "<M-j>", "<Esc>:m .+1<cr>==gi")
+vim.keymap.set("i", "<M-k>", "<Esc>:m .-2<cr>==gi")
+vim.keymap.set("v", "<M-j>", ":m '>+1<cr>gv=gv")
+vim.keymap.set("v", "<M-k>", ":m '<-2<cr>gv=gv")
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -233,45 +233,6 @@ require("lazy").setup({
 	--    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
 	{ import = "custom.plugins" },
 })
-
--- NOTE: The following section is wip
-
--- TODO: hide color preview if the cursor is on the # char
--- #ffffff #000345 #123456 #000fff #ffffff
---
-local ns_id = vim.api.nvim_create_namespace("color_preview")
-local ColorPreview = {}
-function ColorPreview.add_color_preview(bufnr)
-	bufnr = bufnr or vim.api.nvim_get_current_buf()
-	local lines = vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)
-
-	vim.api.nvim_buf_clear_namespace(bufnr, ns_id, 0, -1)
-
-	for lnum, line in ipairs(lines) do
-		for hex in line:gmatch("#%x%x%x%x%x%x") do
-			local col_start = line:find(hex) - 1
-
-			local hl_group = "ColorPreview_" .. hex:sub(2)
-			vim.api.nvim_buf_set_extmark(bufnr, ns_id, lnum - 1, col_start, {
-				virt_text = { { "■", hl_group } },
-				virt_text_pos = "overlay",
-				hl_mode = "combine",
-			})
-
-			vim.api.nvim_set_hl(0, hl_group, { fg = hex })
-		end
-	end
-end
-
-function ColorPreview.setup()
-	vim.api.nvim_create_autocmd({ "BufEnter", "TextChanged", "TextChangedI" }, {
-		callback = function()
-			ColorPreview.add_color_preview()
-		end,
-	})
-end
-
-ColorPreview.setup()
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
