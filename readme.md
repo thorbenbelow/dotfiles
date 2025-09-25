@@ -1,4 +1,4 @@
-# Thorben's Dotfiles
+# Dotfiles
 
 My personal collection of dotfiles and development environment setup, managed with `stow`.
 
