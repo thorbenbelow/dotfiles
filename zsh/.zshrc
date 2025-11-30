@@ -116,6 +116,7 @@ if command -v stackit &> /dev/null; then . <(stackit completion zsh); fi
 if command -v flux &> /dev/null; then . <(flux completion zsh); fi
 if command -v k3d &> /dev/null; then . <(k3d completion zsh); fi
 if command -v minikube &> /dev/null; then . <(minikube completion zsh); fi
+if command -v kubebuild &> /dev/null; then . <(kubebuilder completion zsh); fi
 
 
 # Load Custom Local Config
