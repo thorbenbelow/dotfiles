@@ -4,6 +4,23 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- [[ Filetype detection ]]
+vim.filetype.add({
+	extension = {
+		templ = "templ",
+		gotmpl = "gotmpl",
+		gowork = "gowork",
+		tf = "terraform",
+		tfvars = "terraform-vars",
+	},
+	pattern = {
+		[".*%.jsx"] = "javascript.jsx",
+		[".*%.tsx"] = "typescript.tsx",
+		["docker%-compose%.ya?ml"] = "yaml.docker-compose",
+		["gitlab%-ci%.ya?ml"] = "yaml.gitlab",
+	},
+})
+
 -- [[ Setting options ]]
 -- See `:help vim.opt`
 -- NOTE: You can change these options as you wish!
