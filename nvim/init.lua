@@ -4,6 +4,11 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+-- Ensure Homebrew bin is in PATH on macOS (especially if launched from a GUI app or non-login shell)
+if vim.fn.has("mac") == 1 then
+	vim.env.PATH = "/opt/homebrew/bin:/usr/local/bin:" .. vim.env.PATH
+end
+
 -- [[ Filetype detection ]]
 vim.filetype.add({
 	extension = {
