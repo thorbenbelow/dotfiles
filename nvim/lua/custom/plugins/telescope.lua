@@ -19,11 +19,13 @@ return { -- Fuzzy Finder (files, lsp, etc)
 		},
 		{ "nvim-telescope/telescope-ui-select.nvim" },
 		{ "nvim-telescope/telescope-file-browser.nvim" },
+		{ "nvim-telescope/telescope-frecency.nvim" },
+		{ "kkharji/sqlite.lua" },
 
 		-- Useful for getting pretty icons, but requires special font.
 		--  If you already have a Nerd Font, or terminal set up with fallback fonts
 		--  you can enable this
-		-- { 'nvim-tree/nvim-web-devicons' }
+		{ "nvim-tree/nvim-web-devicons" },
 	},
 	config = function()
 		-- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -63,7 +65,7 @@ return { -- Fuzzy Finder (files, lsp, etc)
 				},
 				file_browser = {
 					theme = "ivy",
-					hijack_netrw = true,
+					hijack_netrw = false,
 				},
 			},
 		})
@@ -72,10 +74,17 @@ return { -- Fuzzy Finder (files, lsp, etc)
 		pcall(require("telescope").load_extension, "fzf")
 		pcall(require("telescope").load_extension, "ui-select")
 		pcall(require("telescope").load_extension, "file_browser")
+		pcall(require("telescope").load_extension, "frecency")
 
 		-- See `:help telescope.builtin`
 		local builtin = require("telescope.builtin")
 
+		vim.keymap.set(
+			"n",
+			"<leader>ff",
+			"<cmd>Telescope frecency<cr>",
+			{ desc = "[F]ind [F]recency" }
+		)
 		vim.keymap.set(
 			"n",
 			"<leader>fb",

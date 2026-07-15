@@ -51,7 +51,7 @@ return { -- Autocompletion
 				-- Select the [n]ext item
 				["<Tab>"] = cmp.mapping.select_next_item(),
 				-- Select the [p]revious item
-				["<Shift-Tab>"] = cmp.mapping.select_prev_item(),
+				["<S-Tab>"] = cmp.mapping.select_prev_item(),
 
 				-- Accept ([y]es) the completion.
 				--  This will auto-import if your LSP supports it.

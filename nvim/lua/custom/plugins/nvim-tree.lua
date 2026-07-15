@@ -6,7 +6,10 @@ return {
     'nvim-tree/nvim-web-devicons',
   },
   config = function()
-    require('nvim-tree').setup {}
+    require('nvim-tree').setup {
+      hijack_netrw = false,
+      disable_netrw = false,
+    }
 
     -- Keymap to toggle nvim-tree
     vim.keymap.set('n', '<leader>t', ':NvimTreeToggle<CR>', {
