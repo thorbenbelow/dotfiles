@@ -71,6 +71,41 @@ get_abs_path() {
     fi
 }
 
+# Check if a relative path is already stowed because one of its parent directories is symlinked.
+is_already_stowed_by_parent() {
+    local pkg_dir="$1"
+    local target_dir="$2"
+    local rel_path="$3"
+    
+    local IFS='/'
+    read -ra parts <<< "$rel_path"
+    unset IFS
+    
+    local current_rel=""
+    local num_parts=${#parts[@]}
+    for ((i=0; i < num_parts - 1; i++)); do
+        if [[ -z "$current_rel" ]]; then
+            current_rel="${parts[i]}"
+        else
+            current_rel="$current_rel/${parts[i]}"
+        fi
+        
+        local dest_parent="$target_dir/$current_rel"
+        if [[ -L "$dest_parent" ]]; then
+            local src_parent="$pkg_dir/$current_rel"
+            local abs_src
+            abs_src=$(get_abs_path "$src_parent") || continue
+            local abs_dest
+            abs_dest=$(get_abs_path "$dest_parent") || continue
+            if [[ "$abs_src" == "$abs_dest" ]]; then
+                return 0
+            fi
+        fi
+    done
+    
+    return 1
+}
+
 # Resolve conflicts at target destination before stowing
 resolve_conflicts() {
     local pkg_dir="$1"
@@ -85,6 +120,13 @@ resolve_conflicts() {
         find . -mindepth 1 | while IFS= read -r rel_path; do
             # Strip leading './'
             rel_path="${rel_path#./}"
+            
+            # If a parent directory of this path is already a correct symlink to dotfiles,
+            # we skip this path entirely (as it is already stowed as part of that parent).
+            if is_already_stowed_by_parent "$pkg_dir" "$target_dir" "$rel_path"; then
+                continue
+            fi
+            
             local src_item="$pkg_dir/$rel_path"
             local dest_item="$target_dir/$rel_path"
             
