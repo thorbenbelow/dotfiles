@@ -30,11 +30,11 @@
 	sort = -committerdate
 
 [alias]
-    co = checkout
-    cob = checkout -b
+    sw = switch
+    swc = switch -c
     br = branch
     ci = commit
     st = status
-    unstage = reset HEAD --
+    unstage = restore --staged
     last = log -1 HEAD
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
