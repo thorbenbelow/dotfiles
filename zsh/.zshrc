@@ -79,26 +79,18 @@ if [[ "$OSTYPE" = darwin* && -x /usr/libexec/java_home ]]; then
     /usr/libexec/java_home > "$JAVA_HOME_CACHE" 2>/dev/null
   fi
   export JAVA_HOME="$(< "$JAVA_HOME_CACHE")"
-else
-  export JAVA_HOME="$(/usr/libexec/java_home 2>/dev/null)"
 fi
 
 export GPG_TTY=$(tty 2>/dev/null || echo "")
 
 # PATH Configuration
-export PATH="$PATH:$GOPATH"
 export PATH="$PATH:$GOBIN"
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
-# Zoxide (cached initialization)
+# Zoxide initialization
 if command -v zoxide &> /dev/null; then
-  ZOXIDE_CACHE="$ZSH_CACHE_DIR/zoxide_init.zsh"
-  if [[ ! -f "$ZOXIDE_CACHE" || "$(command -v zoxide)" -nt "$ZOXIDE_CACHE" ]]; then
-    mkdir -p "${ZOXIDE_CACHE:h}"
-    zoxide init zsh > "$ZOXIDE_CACHE" 2>/dev/null
-  fi
-  source "$ZOXIDE_CACHE"
+  eval "$(zoxide init zsh)"
 fi
 
 # FZF
@@ -127,7 +119,7 @@ if command -v eza &> /dev/null; then
   alias ls="eza"
   alias l="eza --long --all"
   alias la="eza --long --all"
-  alias ll="clear && la"
+  alias ll="la"
 fi
 
 if command -v fzf &> /dev/null; then
@@ -172,8 +164,6 @@ fi
 # Docker
 if command -v docker &> /dev/null; then
   alias d="docker"
-  alias dcu="docker compose up"
-  alias dcd="docker compose down"
   alias docker-compose="docker compose"
 fi
 
