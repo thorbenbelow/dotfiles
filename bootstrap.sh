@@ -14,8 +14,6 @@ STOW_PACKAGES=(
     nvim
     zsh
     ghostty
-    yabai
-    skhd
 )
 
 # --- Helper Functions ---
